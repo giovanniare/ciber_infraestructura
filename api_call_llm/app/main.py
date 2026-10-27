@@ -1,7 +1,8 @@
 from typing import Literal
 from pydantic import BaseModel
-
+from http.client import HTTPException
 from fastapi import FastAPI, APIRouter
+
 from app.services import llm as LLMs
 
 
@@ -29,8 +30,11 @@ def call_llm(request: LLMRequest) -> dict:
         return {"error": "Invalid LLM type. Choose from 'openai', 'anthropic', 'openrouter', or 'gemini'."}
 
     llm_service.initialize()
-    response = llm_service.llm_call(prompt)
-    text_output = llm_service.get_response(response)
+    try:
+        response = llm_service.llm_call(prompt)
+        text_output = llm_service.get_response(response)
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"Error del proveedor LLM: {e}")
 
     return {
         "prompt": prompt,

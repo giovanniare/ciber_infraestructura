@@ -40,7 +40,7 @@ class GoogleGeminiService(LLMService):
             raise ValueError("Client is not initialized. Call initialize() first.")
 
         interaction = self.client.interactions.create(
-            model="gemini-3.8-live",
+            model="gemini-3.8-flash",
             input=prompt
         )
 

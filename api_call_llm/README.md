@@ -25,6 +25,11 @@ uv sync
 uv run fastapi dev
 ```
 
+## API DOC:
+```
+http://localhost:8000/docs
+```
+
 ## DOCS
 - https://openrouter.ai/docs/client-sdks/overview
 - https://platform.claude.com/docs/en/get-started
