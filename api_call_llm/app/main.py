@@ -1,4 +1,5 @@
-from urllib import response
+from typing import Literal
+from pydantic import BaseModel
 
 from fastapi import FastAPI, APIRouter
 from app.services import llm as LLMs
@@ -6,8 +7,16 @@ from app.services import llm as LLMs
 
 router = APIRouter(prefix="/llm_calls", tags=["llm_calls"])
 
+class LLMRequest(BaseModel):
+    prompt: str
+    llm_type: Literal["openai", "anthropic", "openrouter", "gemini"]
+
+
 @router.post("")
-def call_llm(prompt: str, llm_type: str) -> dict:
+def call_llm(request: LLMRequest) -> dict:
+    prompt = request.prompt
+    llm_type = request.llm_type
+
     if llm_type == "openai":
         llm_service = LLMs.OpenAIService()
     elif llm_type == "anthropic":
